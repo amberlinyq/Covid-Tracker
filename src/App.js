@@ -12,6 +12,7 @@ import Table from './Table';
 import { sortData } from './utility';
 import LineGraph from './LineGraph';
 import 'leaflet/dist/leaflet.css';
+import { prettyPrintStat } from './utility';
 
 function App() {
 	const [countries, setCountries] = useState([]);
@@ -21,7 +22,8 @@ function App() {
 	const [casesType, setCasesType] = useState('cases');
 	const [mapCountries, setMapCountries] = useState([]);
 	const [mapCenter, setMapCenter] = useState([42.546245, 23.424076]);
-	const [mapZoom, setMapZoom] = useState(4);
+	const [mapZoom, setMapZoom] = useState(3);
+	console.log('countryInfo===',countryInfo);
 
 	useEffect(() => {
 		fetch('https://disease.sh/v3/covid-19/all')
@@ -36,6 +38,7 @@ function App() {
 			await fetch('https://disease.sh/v3/covid-19/countries')
 				.then((response) => response.json())
 				.then((data) => {
+					console.log('data====',data);
 					const countries = data.map((country) => ({
 						name: country.country,
 						value: country.countryInfo.iso2,
@@ -60,78 +63,85 @@ function App() {
 			.then((data) => {
 				setCountry(countryCode);
 				setCountryInfo(data);
+				setMapZoom(4);
 
-				let latValue = data.countryInfo.lat;
-				let lngValue = data.countryInfo.long;
 				// setMapCenter({ lat: latValue, lng: lngValue });
 				setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
 			});
 	};
-	console.log('mapcenter inside app/', mapCenter);
+
 
 	return (
 		<div className='app'>
-			<div className='app_left'>
-				<div className='app__header'>
-					<h1>Covid-19 Tracker</h1>
-					<FormControl className='app_dropdown'>
-						<Select
-							variant='outlined'
-							defaultValue='Wordlewide'
-							value={country}
-							onChange={onChangeCountry}
-						>
-							<MenuItem value={'Wordlewide'}>Wordlewide</MenuItem>
-							{countries.map((country) => (
-								<MenuItem key={country.name} value={country.value}>
-									{country.name}
-								</MenuItem>
-							))}
-						</Select>
-					</FormControl>
-				</div>
-				<div className='app__stats'>
-					<InfoBox
-						title='Coronavirus Cases'
-						cases={countryInfo.todayCases}
-						total={countryInfo.cases}
-						active={casesType === 'cases'}
-						isRed
-					/>
-					<InfoBox
-						title='Recovered'
-						active={casesType === 'recovered'}
-						cases={countryInfo.todayRecovered}
-						total={countryInfo.recovered}
-					/>
-					<InfoBox
-						title='Deaths'
-						active={casesType === 'deaths'}
-						cases={countryInfo.todayDeaths}
-						total={countryInfo.deaths}
-						isRed
-					/>
-				</div>
-				<Map
-					countries={mapCountries}
-					casesType={casesType}
-					mapCenter={mapCenter}
-					zoom={mapZoom}
-				/>
+			<div className='app__header'>
+				<h1>Covid-19 Tracker</h1>
+				<FormControl className='app_dropdown'>
+					<Select
+						variant='outlined'
+						defaultValue='Wordlewide'
+						value={country}
+						onChange={onChangeCountry}
+					>
+						<MenuItem value={'Wordlewide'}>Wordlewide</MenuItem>
+						{countries.map((country) => (
+							<MenuItem key={country.name} value={country.value}>
+								{country.name}
+							</MenuItem>
+						))}
+					</Select>
+				</FormControl>
 			</div>
-			<div className='app_right'>
-				<Card className='card'>
-					<CardContent className='card_content'>
-						<div className='right_table'>
+			<div className='data'>
+				<div className='data_left'>
+					<Card
+						className='card'
+						style={{ backgroundColor: 'black', color: 'white' }}
+					>
+						<CardContent className='card_content'>
 							<h3>Lives Cases by Country</h3>
 							<Table tableData={tableData} />
-						</div>
-						<div className='right_graph'>
-							<h3>WordleWid new cases</h3>
-							<LineGraph />
-						</div>
-					</CardContent>
-				</Card>
+						</CardContent>
+					</Card>
+					<h3>WordleWide new cases</h3>
+					<LineGraph casesType={casesType} />
+				</div>
+				<div className='data_right'>
+					<div className='app__stats'>
+						<InfoBox
+							onClick={(e) => setCasesType('cases')}
+							title='Coronavirus Cases'
+							cases={prettyPrintStat(countryInfo.todayCases)}
+							total={prettyPrintStat(countryInfo.cases)}
+							active={casesType === 'cases'}
+							isRed
+						/>
+						<InfoBox
+							onClick={(e) => setCasesType('recovered')}
+							title='Recovered'
+							active={casesType === 'recovered'}
+							cases={prettyPrintStat(countryInfo.todayRecovered)}
+							total={prettyPrintStat(countryInfo.recovered)}
+						/>
+						<InfoBox
+							onClick={(e) => setCasesType('deaths')}
+							title='Deaths'
+							active={casesType === 'deaths'}
+							cases={prettyPrintStat(countryInfo.todayDeaths)}
+							total={prettyPrintStat(countryInfo.deaths)}
+							isRed
+						/>
+					</div>
+					<div className='right_graph'>
+						{/* <h3>WordleWid new cases</h3>
+						<LineGraph /> */}
+						<Map
+							countries={mapCountries}
+							casesType={casesType}
+							mapCenter={mapCenter}
+							zoom={mapZoom}
+						/>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

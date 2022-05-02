@@ -1,25 +1,91 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	background-color: black;
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+		sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	color: white;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+		monospace;
+}
+/*----------------------------App-------------------------*/
+.app {
+	margin: 10px;
+}
+.app__stats {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.app_dropdown {
+	background-color: white;
+	border-radius: 10px;
 }
 
-/*----------------------------LineGraph-------------------------*/
+.app__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.data {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.data_left {
+	margin-right: 20px;
+	width: 30%;
+}
+.data_right {
+	width: 70%;
+}
+/*----------------------------Table-------------------------*/
 .lineGraph {
-	background-color: aquamarine;
-	width: 340px;
+	height: 300px;
+}
+/*----------------------------InfoBox-------------------------*/
+.infoBox {
+	flex: 1;
+	border: 1px solid white;
 }
 
+.infoBox:not(:last-child) {
+	margin-right: 20px;
+}
+.infoBox--selected {
+	border-top: 10px solid greenyellow;
+}
+
+.infoBox--red {
+	border-color: red;
+}
+
+.infoBox__cases--green {
+	color: lightgreen !important;
+}
+
+.infoBox__cases {
+	color: #cc1034;
+	font-weight: 600;
+	font-size: 1.75rem;
+	margin-bottom: 0.5rem;
+}
+
+.infoBox__total {
+	color: #6c757d;
+	font-weight: 700 !important;
+	font-size: 0.8rem !important;
+	margin-top: 15px !important;
+}
+/*----------------------------Map-------------------------*/
 .map {
-	height: 500px;
+	height: 650px;
 	background-color: white;
 	padding: 1rem;
 	border-radius: 15px;
@@ -27,7 +93,6 @@ code {
 	box-shadow: 0 0 8px -4px rgba(0, 0, 0, 0.5);
 }
 
-/*----------------------------Map-------------------------*/
 .map .leaflet-container {
 	height: 100%;
 	border-radius: 12px;
@@ -67,21 +132,23 @@ code {
 	margin-top: 20px;
 	overflow: scroll;
 	height: 400px;
-	color: gray;
+	border-bottom: 1px solid white;
+	/* color: gray; */
 }
 .table tr {
 	display: flex;
 	justify-content: space-between;
+	border-bottom: 1px solid #333333;
 }
 table td {
 	padding: 0.5rem;
 }
 .table tr:nth-of-type(odd) {
-	background-color: lightgrey;
+	/* background-color: lightgrey; */
 }
 .card {
-	background-color: blue;
 	height: 100%;
+	border: 1px solid white;
 }
 .card_content {
 	display: flex;

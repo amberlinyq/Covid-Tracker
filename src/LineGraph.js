@@ -20,22 +20,23 @@ ChartJS.register(
 	Legend
 );
 
-function LineGraph({ casesType = 'cases' }) {
+function LineGraph({ casesType }) {
 	const [data, setData] = useState({});
-
-	const buildChartData = (data, casesType = 'cases') => {
+	const buildChartData = (data) => {
 		let chartData = [];
 		let lastDataPoint;
+		console.log('data in function===', data);
 		for (let date in data.cases) {
 			if (lastDataPoint) {
 				let newDataPoint = {
 					x: date,
-					y: data['cases'][date] - lastDataPoint,
+					y: data[casesType][date] - lastDataPoint,
 				};
+
 				chartData.push(newDataPoint);
 			}
 
-			lastDataPoint = data['cases'][date];
+			lastDataPoint = data[casesType][date];
 		}
 
 		return chartData;
@@ -61,6 +62,7 @@ function LineGraph({ casesType = 'cases' }) {
 					return response.json();
 				})
 				.then((data) => {
+					console.log('data===',data);
 					let chartData = buildChartData(data, casesType);
 					setData(chartData);
 

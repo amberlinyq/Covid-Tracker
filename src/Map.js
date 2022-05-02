@@ -1,8 +1,8 @@
 import React from 'react';
 import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet';
+import { showDataonMap } from './utility';
 
 const Map = ({ countries, casesType, mapCenter, zoom }) => {
-	console.log('mapCenter inside map===', mapCenter);
 	function ChangeView({ center, zoom }) {
 		const map = useMap();
 		map.setView(center, zoom);
@@ -16,11 +16,12 @@ const Map = ({ countries, casesType, mapCenter, zoom }) => {
 					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 					url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 				/>
-				<Marker position={mapCenter}>
+				{showDataonMap(countries, casesType)}
+				{/* <Marker position={mapCenter}>
 					<Popup>
 						A pretty CSS3 popup. <br /> Easily customizable.
 					</Popup>
-				</Marker>
+				</Marker> */}
 			</MapContainer>
 		</div>
 	);
